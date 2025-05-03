@@ -1,0 +1,63 @@
+const readline = require('readline').createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
+
+class Calculadora {
+    constructor(operando1, operando2) {
+        this.operando1 = operando1;
+        this.operando2 = operando2;
+    }
+
+    validarNumeros() {
+        return !isNaN(this.operando1) && !isNaN(this.operando2);
+    }
+
+    sumar() {
+        if (!this.validarNumeros()) throw new Error("Operandos inválidos");
+        return this.operando1 + this.operando2;
+    }
+
+    restar() {
+        if (!this.validarNumeros()) throw new Error("Operandos inválidos");
+        return this.operando1 - this.operando2;
+    }
+
+    multiplicar() {
+        if (!this.validarNumeros()) throw new Error("Operandos inválidos");
+        return this.operando1 * this.operando2;
+    }
+
+    dividir() {
+        if (!this.validarNumeros()) throw new Error("Operandos inválidos");
+        if (this.operando2 === 0) throw new Error("No se puede dividir por cero");
+        return this.operando1 / this.operando2;
+    }
+}
+
+function iniciarCalculadora() {
+    readline.question('Ingrese el primer número: ', num1 => {
+        readline.question('Ingrese el segundo número: ', num2 => {
+            readline.question('Ingrese la operación (+, -, *, /): ', operacion => {
+                try {
+                    const calculadora = new Calculadora(parseFloat(num1), parseFloat(num2));
+                    let resultado;
+                    switch (operacion) {
+                        case '+': resultado = calculadora.sumar(); break;
+                        case '-': resultado = calculadora.restar(); break;
+                        case '*': resultado = calculadora.multiplicar(); break;
+                        case '/': resultado = calculadora.dividir(); break;
+                        default: throw new Error("Operación no válida");
+                    }
+                    console.log(`Resultado: ${resultado}`);
+                } catch (error) {
+                    console.error("Error:", error.message);
+                } finally {
+                    readline.close();
+                }
+            });
+        });
+    });
+}
+
+iniciarCalculadora();
